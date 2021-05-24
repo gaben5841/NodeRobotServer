@@ -5,7 +5,7 @@ const app = express()
 const path = require('path')
 const { client } = require('websocket')
 const { createWebSocketStream } = require('ws')
-const WebSocket = require('ws')
+const { Server } = require('ws');
 const port = process.env.PORT || 3000
 
 var imageData
@@ -14,7 +14,7 @@ var raspi
 
 //const server = http.createServer(app)
 //const wss = new WebSocket.Server({server})
-
+/*
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'))
 })
@@ -26,8 +26,12 @@ app.get('/node_modules/base64-js/base64js.min.js', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
+*/
+const server = express()
+  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-const socketServer = new WebSocket.Server({port: 3030})
+const socketServer = new Server({ server });
 
 socketServer.on('connection', (socketClient) => {
   console.log('connected')
