@@ -49,8 +49,6 @@ socketServer.on('connection', (socketClient) => {
       }
     } else {
       imageData = Buffer.from(data, 'binary')
-      //console.log("this function is running")
-      //socketClient.send("response")
       socketServer.clients.forEach(function each(client) {
         if (client !== socketClient && client.readyState === { Server }.OPEN) {
            client.send(imageData);
