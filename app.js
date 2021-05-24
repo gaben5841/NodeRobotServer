@@ -49,7 +49,6 @@ socketServer.on('connection', (socketClient) => {
       }
     } else {
       imageData = Buffer.from(data, 'binary')
-      console.log(imageData)
       //console.log("this function is running")
       //socketClient.send("response")
       socketServer.clients.forEach(function each(client) {
@@ -57,7 +56,6 @@ socketServer.on('connection', (socketClient) => {
            client.send(imageData);
         } else {
           raspi = socketClient
-          console.log(raspi)
         }
       });
 
