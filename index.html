@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>shittyrobot control</title>
+        <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        
+        </script>
+    </head>
+    <body>
+        <h1>shitty robot coming soon</h1>
+        <h3>self explanatory</h3>
+        <img id='videoStream'>
+        <button >Forward</button>
+        <script type='text/javascript'>
+            const ws = new WebSocket('ws://192.168.7.85:3030');
+            ws.onopen = () => { 
+                console.log('Now connected'); 
+            };
+            const imageElm = document.getElementById('videoStream');
+            ws.onmessage = async function(event) {
+                console.log(event.data);
+                const blob = event.data;
+                const objectURL = URL.createObjectURL(blob);
+
+                imageElm.onload = () => {
+                    URL.revokeObjectURL(objectURL);
+                    imageElm.onload = null;
+                };
+                imageElm.src = objectURL;
+            };
+            $(document).ready(function() { 
+                console.log("ready");
+                $(document).on('keypress', function (e) {
+                    console.log(e.key);
+                    ws.send(e.key)
+                });
+            });
+        </script>
+    </body>
+</html>
