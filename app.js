@@ -42,6 +42,7 @@ socketServer.on('connection', (socketClient) => {
     if (typeof data == 'string') {
       console.log('The data type is String')
       console.log(typeof raspi)
+      socketClient.send(data)
       if (typeof raspi === 'undefined') {
         console.log("No robot connected!")
       } else {
