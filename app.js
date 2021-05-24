@@ -27,7 +27,7 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
 
-const socketServer = new WebSocket.Server({port: port})
+const socketServer = new WebSocket.Server({port: 3030})
 
 socketServer.on('connection', (socketClient) => {
   console.log('connected')
