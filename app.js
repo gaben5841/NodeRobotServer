@@ -53,7 +53,7 @@ socketServer.on('connection', (socketClient) => {
       //console.log("this function is running")
       //socketClient.send("response")
       socketServer.clients.forEach(function each(client) {
-        if (client !== socketClient && client.readyState === WebSocket.OPEN) {
+        if (client !== socketClient && client.readyState === { Server }.OPEN) {
            client.send(imageData);
         } else {
           raspi = socketClient
