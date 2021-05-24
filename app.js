@@ -28,8 +28,8 @@ app.listen(port, () => {
 })
 */
 const server = express()
-  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Listening on ${port}`));
+  .use((req, res) => res.sendFile('index.html', { root: __dirname }))
+  .listen(port, () => console.log(`Listening on ${port}`));
 
 const socketServer = new Server({ server });
 
