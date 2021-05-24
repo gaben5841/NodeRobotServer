@@ -6,7 +6,7 @@ const path = require('path')
 const { client } = require('websocket')
 const { createWebSocketStream } = require('ws')
 const WebSocket = require('ws')
-const port = 3000
+const port = process.env.PORT || 3000
 
 var imageData
 var id = 0
