@@ -5,7 +5,7 @@ const app = express()
 const path = require('path')
 const { client } = require('websocket')
 const { createWebSocketStream } = require('ws')
-const { Server } = require('ws');
+const { Server, OPEN } = require('ws');
 const port = process.env.PORT || 3000
 
 var imageData
@@ -29,34 +29,34 @@ app.listen(port, () => {
 */
 const server = express()
   .use((req, res) => res.sendFile('index.html', { root: __dirname }))
-  .listen(port, () => console.log(`Listening on ${port}`));
+  .listen(port, () => console.log(`Listening on ${port}`))
 
-const socketServer = new Server({ server });
+const socketServer = new Server( server )
 
 socketServer.on('connection', (socketClient) => {
   console.log('connected')
   console.log('client set length: ', socketServer.clients.size)
 
   socketClient.on('message', function incoming(data) {
-    console.log(typeof data)
+    //console.log(typeof data)
     if (typeof data == 'string') {
       console.log('The data type is String')
       console.log(typeof raspi)
       if (typeof raspi === 'undefined') {
         console.log("No robot connected!")
       } else {
-        raspi.send('this is hell')
+        raspi.send(data)
       }
     } else {
       imageData = Buffer.from(data, 'binary')
       socketServer.clients.forEach(function each(client) {
-        if (client !== socketClient && client.readyState === { Server }.OPEN) {
+        if (client !== socketClient && client.readyState === OPEN) {
            client.send(imageData);
         } else {
           raspi = socketClient
-          console.log(raspi)
+          //console.log(raspi)
         }
-      });
+      })
 
     }
     
