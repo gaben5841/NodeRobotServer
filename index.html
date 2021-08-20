@@ -9,23 +9,29 @@
         <h1>Webrobot</h1>
         <h3>Video Stream</h3>
         <img id='videoStream'>
-        <button >Forward</button>
+        <h3 id="clients">Clients Connected:</h3>
         <script type='text/javascript'>
-            const ws = new WebSocket('wss://192.168.7.170:3000');
+            const ws = new WebSocket('ws://192.168.7.170:3000');
             ws.onopen = () => { 
                 console.log('Now connected'); 
             };
             const imageElm = document.getElementById('videoStream');
+            const clients = document.getElementById('clients');
             ws.onmessage = async function(event) {
                 console.log(event.data);
-                const blob = event.data;
-                const objectURL = URL.createObjectURL(blob);
+                if (event.data instanceof Blob === true) {
+                    const blob = event.data;
+                    const objectURL = URL.createObjectURL(blob);
 
-                imageElm.onload = () => {
-                    URL.revokeObjectURL(objectURL);
-                    imageElm.onload = null;
-                };
-                imageElm.src = objectURL;
+                    imageElm.onload = () => {
+                        URL.revokeObjectURL(objectURL);
+                        imageElm.onload = null;
+                    };
+                    imageElm.src = objectURL;
+                } else {
+                    clients.innerHTML = " ";
+                    clients.innerHTML = "Clients Connected: " + event.data;
+                }
             };
             $(document).ready(function() { 
                 console.log("ready");

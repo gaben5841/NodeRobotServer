@@ -5,12 +5,13 @@ const app = express()
 const path = require('path')
 const { client } = require('websocket')
 const { createWebSocketStream } = require('ws')
-const { Server, OPEN } = require('ws');
+const { Server, OPEN } = require('ws')
 const port = process.env.PORT || 3000
 
 var imageData
 var id = 0
 var raspi
+var clientLength = 0
 
 //const server = http.createServer(app)
 //const wss = new WebSocket.Server({server})
@@ -31,11 +32,17 @@ const server = express()
   .use((req, res) => res.sendFile('index.html', { root: __dirname }))
   .listen(port, () => console.log(`Listening on ${port}`))
 
-const socketServer = new Server( server )
+const socketServer = new Server({ server })
 
 socketServer.on('connection', (socketClient) => {
   console.log('connected')
   console.log('client set length: ', socketServer.clients.size)
+  clientLength = socketServer.clients.size
+  socketServer.clients.forEach(function each(client) {
+    if (client !== socketClient && client.readyState === OPEN && client !== raspi) {
+       client.send(clientLength);
+    }
+  })
 
   socketClient.on('message', function incoming(data) {
     //console.log(typeof data)
@@ -66,5 +73,11 @@ socketServer.on('connection', (socketClient) => {
   socketClient.on('close', (socketClient) => {
     console.log('closed')
     console.log('number of clients: ', socketServer.clients.size)
+    clientLength = socketServer.clients.size
+    socketServer.clients.forEach(function each(client) {
+      if (client !== socketClient && client.readyState === OPEN && client !== raspi) {
+         client.send(clientLength);
+      }
+    })
   })
 })
