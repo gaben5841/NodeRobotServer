@@ -1,2 +1,2 @@
 # NodeRobotServer
-Node.js server meant to interface and control a robot via Websockets
+Node.js server meant to interface with and control a robot via Websockets
